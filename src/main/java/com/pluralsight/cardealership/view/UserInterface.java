@@ -9,6 +9,7 @@ import com.pluralsight.cardealership.model.Dealership;
 import com.pluralsight.cardealership.model.Vehicle;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -28,7 +29,7 @@ public class UserInterface {
 
     public UserInterface() {
 
-        vehicleDao = new VehicleDaoImpl();
+        vehicleDao = new VehicleDaoImpl("DB_URL", "DB_USR", "DB_PASS");
     }
 
     // Display the user interface
@@ -194,7 +195,7 @@ public class UserInterface {
         }
     }
 
-    private void displayVehicles(ArrayList<Vehicle> vehicleList){
+    private void displayVehicles(List<Vehicle> vehicleList){
         if (vehicleList.isEmpty()) {
             System.out.println("No vehicles found.");
             return;

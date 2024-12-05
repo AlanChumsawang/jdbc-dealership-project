@@ -1,4 +1,5 @@
 package com.pluralsight.cardealership.dao;
 
-public class DealershipDao {
+public interface DealershipDao {
+
 }

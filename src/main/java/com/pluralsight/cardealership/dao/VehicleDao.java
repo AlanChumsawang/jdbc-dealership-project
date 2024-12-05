@@ -2,14 +2,14 @@ package com.pluralsight.cardealership.dao;
 
 import com.pluralsight.cardealership.model.Vehicle;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface VehicleDao {
-    ArrayList<Vehicle> findAllVehicles();
-    ArrayList<Vehicle> findVehicleByMakeModel(String make, String model);
-    ArrayList<Vehicle> findVehicleByPrice(double minPrice, double maxPrice);
-    ArrayList<Vehicle> findVehicleByYear(int year);
-    ArrayList<Vehicle> findVehicleByColor(String color);
-    ArrayList<Vehicle> findVehicleByMileage(int mileage);
-    ArrayList<Vehicle> findVehicleByType(String type);
+    List<Vehicle> findAllVehicles();
+    List<Vehicle> findVehicleByMakeModel(String make, String model);
+    List<Vehicle> findVehicleByPrice(double minPrice, double maxPrice);
+    List<Vehicle> findVehicleByYear(int year);
+    List<Vehicle> findVehicleByColor(String color);
+    List<Vehicle> findVehicleByMileage(int mileage);
+    List<Vehicle> findVehicleByType(String type);
 }
