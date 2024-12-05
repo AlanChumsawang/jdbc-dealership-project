@@ -1,5 +1,7 @@
 package com.pluralsight.cardealership.view;
 
+import com.pluralsight.cardealership.dao.VehicleDao;
+import com.pluralsight.cardealership.dao.VehicleDaoImpl;
 import com.pluralsight.cardealership.fileIO.ContractFileManager;
 import com.pluralsight.cardealership.fileIO.DealershipFileManager;
 import com.pluralsight.cardealership.model.Contract;
@@ -14,26 +16,32 @@ public class UserInterface {
     DealershipFileManager fileManager;
     ContractFileManager contractFileManager;
     String inventoryFile = "src/main/resources/inventory.csv";
+    private VehicleDao vehicleDao;
     // Constructor
-    private void init() {
-        fileManager = new DealershipFileManager();
-        dealership = fileManager.getDealership(inventoryFile);
-        contractFileManager = new ContractFileManager();
-        contractFileManager.loadContracts(dealership);
+//    private void init() {
+//        fileManager = new DealershipFileManager();
+//        dealership = fileManager.getDealership(inventoryFile);
+//        contractFileManager = new ContractFileManager();
+//        contractFileManager.loadContracts(dealership);
+//
+//    }
 
+    public UserInterface() {
+
+        vehicleDao = new VehicleDaoImpl();
     }
 
     // Display the user interface
     public void display() {
         Scanner inputScanner = new Scanner(System.in); // Create a scanner for user input
-        init(); // Initialize the dealership
+        //init(); // Initialize the dealership
         boolean isDone = false;
         while (!isDone) {
             Menus.getMainMenu(); // Display the main menu
             String userInput = inputScanner.nextLine().toUpperCase(); // Wait for user input
             switch (userInput) {
                 case "1":
-                    displayVehicles(dealership.getAllVehicles(), inputScanner);
+                    displayVehicles(vehicleDao.findAllVehicles());
                     break;
                 case "2":
                     // Search for a vehicle
@@ -99,7 +107,7 @@ public class UserInterface {
                         System.out.print("Enter maximum price: ");
                         double maxPrice = scanner.nextDouble();
                         scanner.nextLine(); // Consume newline
-                        displayVehicles(dealership.getVehicleByPrice(minPrice, maxPrice), scanner);
+                        displayVehicles(vehicleDao.findVehicleByPrice(minPrice, maxPrice));
                         break;
                     case "2":
                         // Search by make and model
@@ -107,33 +115,33 @@ public class UserInterface {
                         String make = scanner.nextLine();
                         System.out.print("Enter model: ");
                         String model = scanner.nextLine();
-                        displayVehicles(dealership.getVehicleByMakeModel(make, model), scanner);
+                        displayVehicles(vehicleDao.findVehicleByMakeModel(make, model));
                         break;
                     case "3":
                         // Search by year
                         System.out.print("Enter year: ");
                         int year = scanner.nextInt();
                         scanner.nextLine(); // Consume newline
-                        displayVehicles(dealership.getVehicleByYear(year), scanner);
+                        displayVehicles(vehicleDao.findVehicleByYear(year));
                         break;
                     case "4":
                         // Search by color
                         System.out.print("Enter color: ");
                         String color = scanner.nextLine();
-                        displayVehicles(dealership.getVehicleByColor(color), scanner);
+                        displayVehicles(vehicleDao.findVehicleByColor(color));
                         break;
                     case "5":
                         // Search by mileage
                         System.out.print("Enter maximum mileage: ");
                         int mileage = scanner.nextInt();
                         scanner.nextLine(); // Consume newline
-                        displayVehicles(dealership.getVehicleByMileage(mileage), scanner);
+                        displayVehicles(vehicleDao.findVehicleByMileage(mileage));
                         break;
                     case "6":
                         // Search by type
                         System.out.print("Enter type: ");
                         String type = scanner.nextLine();
-                        displayVehicles(dealership.getVehicleByType(type), scanner);
+                        displayVehicles(vehicleDao.findVehicleByType(type));
                         break;
                     case "7":
                         // Return to main menu
@@ -186,8 +194,8 @@ public class UserInterface {
         }
     }
 
-    private void displayVehicles(ArrayList<Vehicle> vehicleList, Scanner inputScanner){
-        if (vehicleList.size() == 0) {
+    private void displayVehicles(ArrayList<Vehicle> vehicleList){
+        if (vehicleList.isEmpty()) {
             System.out.println("No vehicles found.");
             return;
         }
@@ -198,16 +206,16 @@ public class UserInterface {
                         vehicle.getPrice() + " | Vin:" + vehicle.getVin() + " | Color: " + vehicle.getColor() + "\n");
             }
         }
-        System.out.println("\n Purchase a vehicle by entering the VIN or return to the main menu by entering 0: ");
-        int userInput = inputScanner.nextInt();
-        inputScanner.nextLine(); // Consume newline
-        if (userInput == 0) {
-            return;
-        }
-        else {
-            dealership.purchaseVehicle(userInput, inputScanner);
-            fileManager.saveDealership(dealership);
-        }
+//        System.out.println("\n Purchase a vehicle by entering the VIN or return to the main menu by entering 0: ");
+//        int userInput = inputScanner.nextInt();
+//        inputScanner.nextLine(); // Consume newline
+//        if (userInput == 0) {
+//            return;
+//        }
+//        else {
+//            dealership.purchaseVehicle(userInput, inputScanner);
+//            fileManager.saveDealership(dealership);
+//        }
     }
 
     private void displayContracts(ArrayList<Contract> contractList){
