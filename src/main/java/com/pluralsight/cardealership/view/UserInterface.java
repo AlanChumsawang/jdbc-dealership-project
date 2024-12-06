@@ -3,7 +3,7 @@ package com.pluralsight.cardealership.view;
 import com.pluralsight.cardealership.dao.VehicleDao;
 import com.pluralsight.cardealership.dao.VehicleDaoImpl;
 import com.pluralsight.cardealership.fileIO.ContractFileManager;
-import com.pluralsight.cardealership.fileIO.DealershipFileManager;
+//import com.pluralsight.cardealership.fileIO.DealershipFileManager;
 import com.pluralsight.cardealership.model.Contract;
 import com.pluralsight.cardealership.model.Dealership;
 import com.pluralsight.cardealership.model.Vehicle;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     Dealership dealership; // Declare the dealership variable
-    DealershipFileManager fileManager;
+//    DealershipFileManager fileManager;
     ContractFileManager contractFileManager;
     String inventoryFile = "src/main/resources/inventory.csv";
     private VehicleDao vehicleDao;
@@ -178,7 +178,7 @@ public class UserInterface {
         inputScanner.nextLine();
         Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
         dealership.addVehicle(vehicle);
-        fileManager.saveDealership(dealership);
+        //fileManager.saveDealership(dealership);
     }
 
     private void removeVehicleMenu(Scanner inputScanner){
@@ -189,7 +189,7 @@ public class UserInterface {
             if (vehicle.getVin() == vin) {
                 dealership.removeVehicle(vehicle);
                 System.out.println("Vehicle removed.");
-                fileManager.saveDealership(dealership);
+                //fileManager.saveDealership(dealership);
                 return;
             }
         }

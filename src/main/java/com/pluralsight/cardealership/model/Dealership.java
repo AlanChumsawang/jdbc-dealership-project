@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Dealership {
+    private int id;
     private String name;
     private String address;
     private String phone;
     private ArrayList<Vehicle> inventory;
     private ArrayList<Contract> contractsList;
 
-    public Dealership(String name, String address, String phone) {
+    public Dealership(int id, String name, String address, String phone) {
+       this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
