@@ -4,8 +4,8 @@ public class LeaseContract extends Contract {
     private double expectedEndingValue;
     private double leaseFee;
 
-    public LeaseContract(String startDate, String customerName, String customerEmail, int customerId, Vehicle vehicle, double totalPrice) {
-        super(startDate, customerName, customerEmail, customerId, vehicle);
+    public LeaseContract(int contractID, String startDate, String customerName, String customerEmail, int customerId, Vehicle vehicle, double totalPrice) {
+        super(startDate, customerName, customerEmail, customerId, vehicle, contractID);
         monthlyPayment = getMonthlyPayment();
     }
 

@@ -163,7 +163,8 @@ public class VehicleDaoImpl implements VehicleDao {
                 resultSet.getString("Type"),
                 resultSet.getString("Color"),
                 resultSet.getInt("Odometer"),
-                resultSet.getDouble("Price")
+                resultSet.getDouble("Price"),
+                resultSet.getBoolean("Sold")
         );
     }
 }

@@ -1,16 +1,17 @@
 package com.pluralsight.cardealership.model;
 
 public class SalesContract extends Contract {
-    private double salesTax = 0.05 * getVehicle().getPrice();
+    private double salesTax;
     private double recordingFee = 100.00;
     private double processingFee;
     private boolean isFinanced;
     private double annualInterestRate;
     private int loanTerm;
+    private double monthlyPayment;
 
-    public SalesContract(String startDate, String customerName, String customerEmail, int customerId, Vehicle vehicle,
-                         double totalPrice, boolean isFinanced) {
-        super(startDate, customerName, customerEmail, customerId, vehicle);
+    public SalesContract(int contractID, String startDate, String customerName, String customerEmail, int customerId, Vehicle vehicle, boolean isFinanced) {
+        super(startDate, customerName, customerEmail, customerId, vehicle, contractID);
+        this.salesTax = 0.05 * vehicle.getPrice();
         if (vehicle.getPrice() < 10000) {
             this.processingFee = 295.00;
         } else {
@@ -25,43 +26,50 @@ public class SalesContract extends Contract {
             this.loanTerm = 48;
         } else {
             this.annualInterestRate = 0.0;
+            this.loanTerm = 1; // Avoid division by zero
         }
-        monthlyPayment = getMonthlyPayment();
+        this.monthlyPayment = getMonthlyPayment();
     }
 
     @Override
     public String toString() {
-        System.out.println("Sales Contract");
-        System.out.println("Date: " + getStartDate());
-        System.out.println("Customer: " + getCustomerName() + " (" + getCustomerEmail() + ")");
-        System.out.println("Customer ID: " + getCustomerId());
-        System.out.println("Vehicle: " + getVehicle().getYear() + " " + getVehicle().getMake() + " " + getVehicle().getModel());
-        System.out.println("Price: " + getVehicle().getPrice());
-        System.out.println("Sales Tax: " + salesTax);
-        System.out.println("Recording Fee: " + recordingFee);
-        System.out.println("Processing Fee: " + processingFee);
-        System.out.println("Total Price: " + getTotalPrice());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Sales Contract\n");
+        sb.append("Date: ").append(getStartDate()).append("\n");
+        sb.append("Customer: ").append(getCustomerName()).append(" (").append(getCustomerEmail()).append(")\n");
+        sb.append("Customer ID: ").append(getCustomerId()).append("\n");
+        sb.append("Vehicle: ").append(getVehicle().getYear()).append(" ").append(getVehicle().getMake()).append(" ").append(getVehicle().getModel()).append("\n");
+        sb.append("Price: ").append(getVehicle().getPrice()).append("\n");
+        sb.append("Sales Tax: ").append(salesTax).append("\n");
+        sb.append("Recording Fee: ").append(recordingFee).append("\n");
+        sb.append("Processing Fee: ").append(processingFee).append("\n");
+        sb.append("Total Price: ").append(getTotalPrice()).append("\n");
         if (isFinanced) {
-            System.out.println("Financed: Yes");
-            System.out.println("Annual Interest Rate: " + annualInterestRate);
-            System.out.println("Loan Term: " + loanTerm + " months");
-            System.out.println("Monthly Payment: " + monthlyPayment);
+            sb.append("Financed: Yes\n");
+            sb.append("Annual Interest Rate: ").append(annualInterestRate).append("\n");
+            sb.append("Loan Term: ").append(loanTerm).append(" months\n");
+            sb.append("Monthly Payment: ").append(monthlyPayment).append("\n");
         } else {
-            System.out.println("Financed: No");
+            sb.append("Financed: No\n");
         }
-        return null;
+        return sb.toString();
     }
 
     @Override
     public double getTotalPrice() {
-        return Math.round(getVehicle().getPrice() + salesTax + recordingFee + processingFee);
+        return getVehicle().getPrice() + salesTax + recordingFee + processingFee;
     }
 
     @Override
     public double getMonthlyPayment() {
-        return getTotalPrice() / loanTerm;
+        if (isFinanced) {
+            double principal = getTotalPrice();
+            double monthlyInterestRate = annualInterestRate / 12;
+            return (principal * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
+        } else {
+            return getTotalPrice();
+        }
     }
-
 
     @Override
     public String formatContract(Contract contract, Vehicle vehicle) {
@@ -69,5 +77,13 @@ public class SalesContract extends Contract {
                 contract.getStartDate(), contract.getCustomerName(), contract.getCustomerEmail(), vehicle.getVin(), vehicle.getYear(), vehicle.getMake(),
                 vehicle.getModel(), vehicle.getVehicleType(), vehicle.getColor(), contract.getCustomerId(), vehicle.getPrice(), salesTax, recordingFee,
                 processingFee, getTotalPrice(), isFinanced, annualInterestRate);
+    }
+
+    public boolean isFinanced() {
+        return isFinanced;
+    }
+
+    public int getLoanTerm() {
+        return loanTerm;
     }
 }

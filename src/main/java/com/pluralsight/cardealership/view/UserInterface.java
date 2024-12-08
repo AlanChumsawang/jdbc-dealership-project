@@ -2,8 +2,6 @@ package com.pluralsight.cardealership.view;
 
 import com.pluralsight.cardealership.dao.VehicleDao;
 import com.pluralsight.cardealership.dao.VehicleDaoImpl;
-import com.pluralsight.cardealership.fileIO.ContractFileManager;
-//import com.pluralsight.cardealership.fileIO.DealershipFileManager;
 import com.pluralsight.cardealership.model.Contract;
 import com.pluralsight.cardealership.model.Dealership;
 import com.pluralsight.cardealership.model.Vehicle;
@@ -14,18 +12,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     Dealership dealership; // Declare the dealership variable
-//    DealershipFileManager fileManager;
-    ContractFileManager contractFileManager;
-    String inventoryFile = "src/main/resources/inventory.csv";
     private VehicleDao vehicleDao;
-    // Constructor
-//    private void init() {
-//        fileManager = new DealershipFileManager();
-//        dealership = fileManager.getDealership(inventoryFile);
-//        contractFileManager = new ContractFileManager();
-//        contractFileManager.loadContracts(dealership);
-//
-//    }
 
     public UserInterface() {
 
@@ -35,7 +22,6 @@ public class UserInterface {
     // Display the user interface
     public void display() {
         Scanner inputScanner = new Scanner(System.in); // Create a scanner for user input
-        //init(); // Initialize the dealership
         boolean isDone = false;
         while (!isDone) {
             Menus.getMainMenu(); // Display the main menu
@@ -176,7 +162,7 @@ public class UserInterface {
         System.out.print("Enter Price: ");
         double price = inputScanner.nextDouble();
         inputScanner.nextLine();
-        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price);
+        Vehicle vehicle = new Vehicle(vin, year, make, model, type, color, odometer, price, false);
         dealership.addVehicle(vehicle);
         //fileManager.saveDealership(dealership);
     }
